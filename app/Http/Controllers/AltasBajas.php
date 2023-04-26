@@ -16,6 +16,7 @@ class AltasBajas extends Controller
     }
     public function inicio()
     {
+        // $icono = 'img/arriba-abajo.png';
         $gasto = 0;
         $ganancia = 0;
         $AB = Registro::select('t_registros.cantidad', 't_cat_tipos.tipos')
@@ -39,6 +40,7 @@ class AltasBajas extends Controller
      */
     public function index()
     {
+        // $icono = 'img/arriba-abajo.png';
         $titulo = 'Altas-Bajas';
         // $AB = Registro::join('t_cat_tipos','t_cat_tipos.id','=','t_registros.tipo')->join('t_cat_categorias','t_cat_categorias.id','=','t_registros.categoria')->select('t_registros.cantidad','t_registros.descripcion','t_registros.id','t_registros.created_at','t_cat_categorias.tipo_categoria','t_cat_tipos.tipo')->get();
         // $AB = Registro::join('t_cat_tipos','t_cat_tipos.id','t_registros.tipo')->join('t_cat_categorias','t_cat_categorias.id','t_registros.categoria')->select('t_registros.cantidad','t_registros.descripcion','t_registros.id','t_registros.created_at','t_cat_categorias.tipo_categoria','t_cat_tipos.tipo')->get();

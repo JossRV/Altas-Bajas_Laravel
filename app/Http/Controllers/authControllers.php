@@ -16,8 +16,9 @@ class authControllers extends Controller
     }
     public function index()
     {
+        $icono = 'img/usuario.png';
         $titulo = 'Login';
-        return view('modules/login/index', compact('titulo'));
+        return view('modules/login/index', compact('titulo','icono'));
     }
     public function logeo(Request $request)
     {
@@ -38,8 +39,9 @@ class authControllers extends Controller
     }
     public function registro()
     {
+        $icono = 'img/agregar-usuario.png';
         $titulo = 'Registro';
-        return view('modules/login/registro', compact('titulo'));
+        return view('modules/login/registro', compact('titulo','icono'));
     }
     public function nuevoRegistro(Request $request)
     {
