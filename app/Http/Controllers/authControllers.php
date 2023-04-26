@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class authControllers extends Controller
 {
@@ -18,6 +19,7 @@ class authControllers extends Controller
     {
         $icono = 'img/usuario.png';
         $titulo = 'Login';
+        // toast('Your Post as been submited!','success');
         return view('modules/login/index', compact('titulo','icono'));
     }
     public function logeo(Request $request)
@@ -25,9 +27,11 @@ class authControllers extends Controller
         $credenciales = $request->only("name", "password");
         if (Auth::attempt($credenciales)) {
             if(auth()->user()->rol == 'cliente'){
+                Alert::success('Credenciales correctas!', 'Ah ingresado a la plataforma');
                 return redirect()->route('inicio');
             }
         } else {
+            Alert::error('Credenciales incorrectas!', 'Verifique sus datos');
             return back()->withInput($credenciales);
         }
     }
@@ -35,6 +39,7 @@ class authControllers extends Controller
     {
         Auth::logout();
         Session::flush();
+        Alert::success('Salio!', 'Ah cerrado sesion en la plataforma');
         return redirect()->route('login');
     }
     public function registro()
@@ -50,6 +55,7 @@ class authControllers extends Controller
         $item->password = Hash::make($request->password);
         $item->rol = 'cliente';
         $item->save();
+        Alert::success('Registrado!', 'Se ha registrado correctamente');
         return redirect()->route('login');
     }
 }

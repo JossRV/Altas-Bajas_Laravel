@@ -30,7 +30,7 @@ class AltasBajas extends Controller
             }
         }
         $titulo = 'Altas-Bajas';
-        toast($titulo, 'success');
+        // toast($titulo, 'success');
         return view('modules/cliente/inicio', compact('titulo', 'AB', 'gasto', 'ganancia'));
     }
     /**
