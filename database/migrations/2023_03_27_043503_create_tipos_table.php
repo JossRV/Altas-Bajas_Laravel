@@ -13,9 +13,9 @@ class CreateTiposTable extends Migration
      */
     public function up()
     {
-        Schema::create('tipos', function (Blueprint $table) {
+        Schema::create('t_cat_tipos', function (Blueprint $table) {
             $table->id();
-            $table->string("tipo");
+            $table->string("tipos");
             $table->timestamps();
         });
     }

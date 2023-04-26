@@ -13,7 +13,7 @@ class CreateCategoriasTable extends Migration
      */
     public function up()
     {
-        Schema::create('categorias', function (Blueprint $table) {
+        Schema::create('t_cat_categorias', function (Blueprint $table) {
             $table->id();
             $table->string("tipo_categoria");
             $table->timestamps();
