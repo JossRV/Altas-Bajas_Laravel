@@ -10,21 +10,27 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class AltasBajas extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth'])->only('inicio');
+    }
     public function inicio()
     {
         $gasto = 0;
         $ganancia = 0;
-        $AB = Registro::select('t_registros.cantidad', 't_cat_tipos.tipos')->join('t_cat_tipos', 't_cat_tipos.id', 't_registros.tipo')->get();
+        $AB = Registro::select('t_registros.cantidad', 't_cat_tipos.tipos')
+            ->join('t_cat_tipos', 't_cat_tipos.id', 't_registros.tipo')
+            ->get();
         foreach ($AB as $altaBaja) {
             if ($altaBaja->tipos == 'gasto') {
                 $gasto += $altaBaja->cantidad;
-            } else if ($altaBaja->tipos == 'ganancia') {
+            } elseif ($altaBaja->tipos == 'ganancia') {
                 $ganancia += $altaBaja->cantidad;
             }
         }
         $titulo = 'Altas-Bajas';
-        toast($titulo,'success');
-        return view("inicio", compact("titulo", "AB", "gasto", "ganancia"));
+        toast($titulo, 'success');
+        return view('modules/cliente/inicio', compact('titulo', 'AB', 'gasto', 'ganancia'));
     }
     /**
      * Display a listing of the resource.
@@ -36,11 +42,14 @@ class AltasBajas extends Controller
         $titulo = 'Altas-Bajas';
         // $AB = Registro::join('t_cat_tipos','t_cat_tipos.id','=','t_registros.tipo')->join('t_cat_categorias','t_cat_categorias.id','=','t_registros.categoria')->select('t_registros.cantidad','t_registros.descripcion','t_registros.id','t_registros.created_at','t_cat_categorias.tipo_categoria','t_cat_tipos.tipo')->get();
         // $AB = Registro::join('t_cat_tipos','t_cat_tipos.id','t_registros.tipo')->join('t_cat_categorias','t_cat_categorias.id','t_registros.categoria')->select('t_registros.cantidad','t_registros.descripcion','t_registros.id','t_registros.created_at','t_cat_categorias.tipo_categoria','t_cat_tipos.tipo')->get();
-        $AB = Registro::select('t_registros.cantidad', 't_registros.descripcion', 't_registros.id', 't_registros.created_at', 't_cat_categorias.tipo_categoria', 't_cat_tipos.tipos')->join('t_cat_categorias', 't_cat_categorias.id', 't_registros.categoria')->join('t_cat_tipos', 't_cat_tipos.id', 't_registros.tipo')->get();
+        $AB = Registro::select('t_registros.cantidad', 't_registros.descripcion', 't_registros.id', 't_registros.created_at', 't_cat_categorias.tipo_categoria', 't_cat_tipos.tipos')
+            ->join('t_cat_categorias', 't_cat_categorias.id', 't_registros.categoria')
+            ->join('t_cat_tipos', 't_cat_tipos.id', 't_registros.tipo')
+            ->get();
         // $AB = Registro::all();
         // si se agregan mas alerts, se interpone y muestra la superiro que este alert
         // toast("Registros","success");
-        return view("altasBajas", compact("titulo", "AB"));
+        return view('modules/cliente/altasBajas', compact('titulo', 'AB'));
     }
 
     /**
@@ -53,7 +62,7 @@ class AltasBajas extends Controller
         $categorias = Categoria::all();
         $tipos = Tipo::all();
         $titulo = 'Altas-Bajas';
-        return view("nuevoAB", compact("titulo", "categorias", "tipos"));
+        return view('modules/cliente/nuevoAB', compact('titulo', 'categorias', 'tipos'));
     }
 
     /**
@@ -71,12 +80,12 @@ class AltasBajas extends Controller
         $altasBajas->cantidad = $request->cantidad;
         $altasBajas->descripcion = $descripcion;
         if (!$altasBajas->save()) {
-            Alert::error("Error","No se guardo el registro...");
+            Alert::error('Error', 'No se guardo el registro...');
             return back()->route('nuevoAB');
         }
         // no se puede hacer return a un alert
-        Alert::success("Guardado!","El registro se guardo correctamente");
-        return redirect()->route("AB");
+        Alert::success('Guardado!', 'El registro se guardo correctamente');
+        return redirect()->route('AB');
     }
 
     /**
@@ -88,8 +97,12 @@ class AltasBajas extends Controller
     public function show($id)
     {
         $titulo = 'Altas-Bajas';
-        $AB = Registro::select('t_registros.cantidad', 't_registros.descripcion', 't_registros.id', 't_cat_categorias.tipo_categoria', 't_cat_tipos.tipos')->join('t_cat_categorias', 't_cat_categorias.id', 't_registros.categoria')->join('t_cat_tipos', 't_cat_tipos.id', 't_registros.tipo')->where('t_registros.id', $id)->first();
-        return view("eliminar", compact("titulo", "AB"));
+        $AB = Registro::select('t_registros.cantidad', 't_registros.descripcion', 't_registros.id', 't_cat_categorias.tipo_categoria', 't_cat_tipos.tipos')
+            ->join('t_cat_categorias', 't_cat_categorias.id', 't_registros.categoria')
+            ->join('t_cat_tipos', 't_cat_tipos.id', 't_registros.tipo')
+            ->where('t_registros.id', $id)
+            ->first();
+        return view('modules/cliente/eliminar', compact('titulo', 'AB'));
     }
 
     /**
@@ -100,11 +113,15 @@ class AltasBajas extends Controller
      */
     public function edit($id)
     {
-        $AB = Registro::select('t_registros.cantidad', 't_registros.descripcion', 't_registros.id', 't_cat_categorias.tipo_categoria', 't_cat_tipos.tipos', 't_registros.tipo', 't_registros.categoria')->join('t_cat_categorias', 't_cat_categorias.id', 't_registros.categoria')->join('t_cat_tipos', 't_cat_tipos.id', 't_registros.tipo')->where('t_registros.id', $id)->first();
+        $AB = Registro::select('t_registros.cantidad', 't_registros.descripcion', 't_registros.id', 't_cat_categorias.tipo_categoria', 't_cat_tipos.tipos', 't_registros.tipo', 't_registros.categoria')
+            ->join('t_cat_categorias', 't_cat_categorias.id', 't_registros.categoria')
+            ->join('t_cat_tipos', 't_cat_tipos.id', 't_registros.tipo')
+            ->where('t_registros.id', $id)
+            ->first();
         $categorias = Categoria::all();
         $tipos = Tipo::all();
         $titulo = 'Altas-Bajas';
-        return view("editarAB", compact("titulo", "AB", "categorias", "tipos"));
+        return view('modules/cliente/editarAB', compact('titulo', 'AB', 'categorias', 'tipos'));
     }
 
     /**
@@ -121,12 +138,12 @@ class AltasBajas extends Controller
         $altasBajas->cantidad = $request->cantidad;
         $altasBajas->descripcion = $descripcion;
         if (!$altasBajas->save()) {
-            Alert::error("Error","No se actualizo el registro...");
+            Alert::error('Error', 'No se actualizo el registro...');
             // return back()->route('editarAB');
         }
         // no se puede hacer return a un alert
-        Alert::success("Actualizado!","El registro se actualizo correctamente");
-        return redirect()->route("AB");
+        Alert::success('Actualizado!', 'El registro se actualizo correctamente');
+        return redirect()->route('AB');
     }
 
     /**
@@ -140,10 +157,24 @@ class AltasBajas extends Controller
         $altasBajas = Registro::find($id);
         $altasBajas->delete();
         if (!$altasBajas->delete()) {
-            Alert::error("Error","No se elimino el registro...");
+            Alert::error('Error', 'No se elimino el registro...');
             // return back()->route('editarAB');
         }
-        Alert::success("Eliminado!","El registro se elimino correctamente");
-        return redirect()->route("AB");
+        Alert::success('Eliminado!', 'El registro se elimino correctamente');
+        return redirect()->route('AB');
+    }
+    public function agregarTipos()
+    {
+        $item = new Tipo();
+        $item->tipos = 'Ganancias';
+        $item->save();
+        return $item;
+    }
+    public function agregarCat()
+    {
+        $item = new Categoria();
+        $item->tipo_categoria = 'Amazon';
+        $item->save();
+        return $item;
     }
 }

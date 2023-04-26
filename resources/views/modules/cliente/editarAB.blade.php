@@ -44,11 +44,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row text-center">
                         <div class="col">
-                            <button class="btn btn-outline-success">Actualizar</button>
-                        </div>
-                        <div class="col">
+                            <button class="btn btn-outline-success me-2">Actualizar</button>
                             <a href="{{route('AB')}}" class="btn btn-outline-primary"> Cancelar </a>
                         </div>
                     </div>
