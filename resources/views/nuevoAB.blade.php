@@ -45,11 +45,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row text-center">
                         <div class="col">
-                            <button class="btn btn-outline-success">Guardar</button>
-                        </div>
-                        <div class="col">
+                            <button class="btn btn-outline-success me-3">Guardar</button>
                             <a href="{{route('AB')}}" class="btn btn-outline-primary"> Regresar </a>
                         </div>
                     </div>
